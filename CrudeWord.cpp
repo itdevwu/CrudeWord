@@ -1,8 +1,7 @@
 // This project is licensed under Apache License, Version 2.0 http://www.apache.org/licenses/
 // Copyright 2020, Zhenglong WU
-// Version: 0.1
+// Version: 0.2
 #include <bits/stdc++.h>
-// #include <io.h>
 #include <windows.h> // Currently only available on Windows
 
 using namespace std;
@@ -58,13 +57,21 @@ struct word
 
 priority_queue<word, vector<word> > pq;
 
-void read_old()
+inline string captalize(string x)
+{
+    int l = x.length();
+    for (int i = 0; i < l; ++i)
+        x[i] = ((x[i] >= 'a' && x [i] <= 'z') ? (x[i] - 'a' + 'A') : x[i]);
+    return x;
+}
+
+inline void read_old()
 {
     system("cls");
     string opt;
     cout << "Read old database?(y/n)\n";
     cin >> opt;
-    if (opt == "y" || opt == "Y")
+    if (captalize(opt) == "Y")
     {
         ifstream dbin("db.txt");
         // freopen("db.txt", "r", stdin); // Not working in my environment.
@@ -85,16 +92,17 @@ void read_old()
         // freopen("CON", "r", stdin); // Not working in my environment.
 
         cout << "Old database loaded successfully\n";
+        dbin.close();
     }
 }
 
-void read_new()
+inline void read_new()
 {
     system("cls");
     string opt;
     cout << "Read new words?(y/n)\n";
     cin >> opt;
-    if (opt == "y" || opt == "Y")
+    if (captalize(opt) == "Y")
     {
         cout << "Loading words\n";
 
@@ -109,10 +117,11 @@ void read_new()
         } while (!fin.eof());
         // freopen("CON", "r", stdin); // Not working in my environment.
         cout << "Word list loaded successfully\n";
+        fin.close();
     }
 }
 
-void save()
+inline void save()
 {
     ofstream fout("db.txt");
     while (!pq.empty())
@@ -120,9 +129,10 @@ void save()
         fout << pq.top().text << " " << pq.top().correct << " " << pq.top().wrong << endl;
         pq.pop();
     }
+    fout.close();
 }
 
-void run()
+inline void run()
 {
     while (!pq.empty())
     {
@@ -135,7 +145,7 @@ void run()
         string opt;
         cin >> opt;
 
-        if (opt == "y" || "opt" == "Y")
+        if (captalize(opt) == "Y")
         {
             tmp = pq.top();
             tmp.addcorrect();
@@ -143,7 +153,7 @@ void run()
             pq.pop();
             pq.push(tmp);
         }
-        else if (opt == "n" || "opt" == "N")
+        else if (captalize(opt) == "N")
         {
             tmp = pq.top();
             tmp.addwrond();
@@ -156,7 +166,7 @@ void run()
             cmd += url;
             system(cmd.c_str());
         }
-        else if (opt == "save")
+        else if (captalize(opt) == "SAVE")
         {
             save();
         }
